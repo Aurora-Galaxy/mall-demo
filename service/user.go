@@ -6,6 +6,7 @@ import (
 	"gin_mall/repository/db/dao"
 	"gin_mall/repository/db/model"
 	"gin_mall/serializer"
+	logging "github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 )
 
@@ -16,6 +17,7 @@ type UserService struct {
 	Key      string `json:"key" form:"key"`
 }
 
+// Register 注册
 func (userService *UserService) Register(ctx context.Context) serializer.Response {
 	var user model.User
 	code := e.SUCCESS
@@ -76,5 +78,49 @@ func (userService *UserService) Register(ctx context.Context) serializer.Respons
 	return serializer.Response{
 		Status: code,
 		Msg:    e.GetMsg(code),
+	}
+}
+
+// Login 登录
+func (userService *UserService) Login(ctx context.Context) serializer.Response {
+	var user *model.User
+	code := e.SUCCESS
+	//建立连接
+	userDao := dao.NewUserDao(ctx)
+	//验证用户是否存在
+	user, exit, err := userDao.ExistOrNotByUserName(userService.UserName)
+	if !exit {
+		logging.Info(err)
+		code = e.ErrorExistUser
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	//验证密码
+	if !user.CheckPassword(userService.Password) {
+		code = e.ErrorNotCompare
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	//生成token
+	token, err := utils.GenerateToken(user.ID, userService.UserName, 0)
+	if err != nil {
+		logging.Info(err)
+		code = e.ErrorAuthToken
+		return serializer.Response{
+			Status: code,
+			Msg:    e.GetMsg(code),
+		}
+	}
+	return serializer.Response{
+		Status: code,
+		Data: serializer.TokenData{
+			User:  serializer.BuildUser(user),
+			Token: token,
+		},
+		Msg: e.GetMsg(code),
 	}
 }

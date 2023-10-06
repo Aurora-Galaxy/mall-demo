@@ -6,6 +6,7 @@ var MsgFlags = map[int]string{
 	NotExistInentifier:    "该第三方账号未绑定",
 	ERROR:                 "fail",
 	InvalidParams:         "请求参数错误",
+	TokenIsNULL:           "token为空",
 
 	ErrorExistNick:          "已存在该昵称",
 	ErrorExistUser:          "已存在该用户名",

@@ -6,7 +6,7 @@ const (
 	NotExistInentifier    = 202
 	ERROR                 = 500
 	InvalidParams         = 400
-
+	TokenIsNULL           = 401
 	//成员错误
 	ErrorExistNick          = 10001
 	ErrorExistUser          = 10002

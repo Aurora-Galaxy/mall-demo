@@ -15,6 +15,14 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
+type EmailClaims struct {
+	ID            uint   `json:"id"`
+	Email         string `json:"email"`
+	Password      string `json:"password"`
+	OperationType uint   `json:"operationType"`
+	jwt.StandardClaims
+}
+
 func GenerateToken(id uint, userName string, authority int) (string, error) {
 	timeNow := time.Now()
 	//token过期时间
@@ -47,6 +55,43 @@ func ParseToken(token string) (*Claims, error) {
 	// tokenClaims 非空代表解析成功
 	if tokenClaims != nil {
 		claims, ok := tokenClaims.Claims.(*Claims) //类型断言，判断解析后是否为定义的*Claims类型
+		//判断token的有效性
+		if ok && tokenClaims.Valid {
+			return claims, nil
+		}
+	}
+	return nil, err
+}
+
+func GenerateEmailToken(id uint, email string, operationType uint, password string) (string, error) {
+	timeNow := time.Now()
+	//token过期时间
+	expireTime := timeNow.Add(24 * time.Hour)
+	claims := EmailClaims{
+		ID:            id,
+		Email:         email,
+		OperationType: operationType,
+		Password:      password,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expireTime.Unix(),
+			Issuer:    "gin-mall-email", //指定token的颁发者
+		},
+	}
+	//创建一个新的jwt-token对象，使用hs256签名算法，claims为token主体
+	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	//根据给出的jwtSecret生成token并返回
+	token, err := tokenClaims.SignedString(jwtSecret)
+	return token, err
+}
+
+// ParseEmailToken  验证token
+func ParseEmailToken(token string) (*EmailClaims, error) {
+	tokenClaims, err := jwt.ParseWithClaims(token, &EmailClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return jwtSecret, nil
+	})
+	// tokenClaims 非空代表解析成功
+	if tokenClaims != nil {
+		claims, ok := tokenClaims.Claims.(*EmailClaims) //类型断言，判断解析后是否为定义的*Claims类型
 		//判断token的有效性
 		if ok && tokenClaims.Valid {
 			return claims, nil

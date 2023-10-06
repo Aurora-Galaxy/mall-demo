@@ -40,7 +40,7 @@ cache:
   cacheServer:
 
 email:
-  address: http://localhost:8080/#/vaild/email/
+  validEmail: http://localhost:8080/#/vaild/email/
   smtpHost: smtp.qq.com:25
   smtpEmail: 1302997173@qq.com
   smtpPass: kmibjpfvgamxfggh  # 发送邮件邮箱的授权码

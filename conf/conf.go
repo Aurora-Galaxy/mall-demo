@@ -19,7 +19,7 @@ type Conf struct {
 	KafKa         map[string]*KafkaConfig `yaml:"kafKa"`
 	RabbitMq      *RabbitMq               `yaml:"rabbitMq"`
 	Es            *Es                     `yaml:"es"`
-	//PhotoPath     *LocalPhotoPath         `yaml:"photoPath"`
+	PhotoPath     *LocalPhotoPath         `yaml:"photoPath"`
 }
 
 type RabbitMq struct {
@@ -81,7 +81,7 @@ type Redis struct {
 	RedisPort     string `yaml:"redisPort"`
 	RedisUsername string `yaml:"redisUsername"`
 	RedisPassword string `yaml:"redisPwd"`
-	RedisDbName   int    `yaml:"redisDbName"`
+	RedisDbName   string `yaml:"redisDbName"`
 	RedisNetwork  string `yaml:"redisNetwork"`
 }
 
@@ -93,11 +93,11 @@ type EncryptSecret struct {
 	MoneySecret string `yaml:"moneySecret"`
 }
 
-//type LocalPhotoPath struct {
-//	PhotoHost   string `yaml:"photoHost"`
-//	ProductPath string `yaml:"productPath"`
-//	AvatarPath  string `yaml:"avatarPath"`
-//}
+type LocalPhotoPath struct {
+	PhotoHost   string `yaml:"photoHost"`
+	ProductPath string `yaml:"productPath"`
+	AvatarPath  string `yaml:"avatarPath"`
+}
 
 type Cache struct {
 	CacheType    string `yaml:"cacheType"`

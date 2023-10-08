@@ -7,6 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func NewRouter() *gin.Engine {
@@ -17,6 +18,8 @@ func NewRouter() *gin.Engine {
 	r.Use(middleware.Cors())
 	//创建一个session中间件，mySession为该中间件的名称，store用于将 session 数据存储在客户端的 cookie 中
 	r.Use(sessions.Sessions("mySession", store))
+	//用于将指定目录下的文件提供为静态文件服务
+	r.StaticFS("/static", http.Dir("./static"))
 	v1 := r.Group("api/v1")
 	{
 		v1.GET("/ping", func(context *gin.Context) {
@@ -24,13 +27,18 @@ func NewRouter() *gin.Engine {
 		})
 		v1.POST("/user/register", api.UserRegister) //注册
 		v1.POST("/user/login", api.UserLogin)       //登录
+		v1.GET("/carousel", api.ListCarousel)       //商品轮播图
 		authed := v1.Group("/")
 		authed.Use(middleware.JWT())
 		{
+			// 用户操作
 			authed.POST("user/update", api.UserUpdates)    //更新信息
 			authed.POST("user/sendmail", api.SendEmail)    //发送邮件
 			authed.POST("user/valid-mail", api.ValidEmail) //验证邮箱
 			authed.GET("user/money", api.GetMoney)         //显示余额
+
+			//商品操作
+			authed.POST("product/create", api.CreateProduct) //创建商品
 		}
 	}
 	return r

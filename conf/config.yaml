@@ -58,10 +58,10 @@ oss:
   QiNiuServer:
 
 
-#photoPath:
-#  photoHost: http://127.0.0.1
-#  ProductPath: /static/imgs/product/
-#  AvatarPath: /static/imgs/avatar/
+photoPath:
+  photoHost: http://127.0.0.1
+  ProductPath: /static/imgs/product/
+  AvatarPath: /static/imgs/avatar/
 
 es:
   EsHost: 127.0.0.1

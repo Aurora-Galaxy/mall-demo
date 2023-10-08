@@ -16,7 +16,7 @@ func UserRegister(ctx *gin.Context) {
 		res := userRegister.Register(ctx.Request.Context())
 		ctx.JSON(e.SUCCESS, res)
 	} else {
-		ctx.JSON(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 	}
 }
 
@@ -28,7 +28,7 @@ func UserLogin(ctx *gin.Context) {
 		res := userLogin.Login(ctx.Request.Context())
 		ctx.JSON(e.SUCCESS, res)
 	} else {
-		ctx.JSON(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 	}
 }
 
@@ -41,6 +41,6 @@ func UserUpdates(ctx *gin.Context) {
 		res := userUpdate.Update(ctx.Request.Context(), claims.ID)
 		ctx.JSON(e.SUCCESS, res)
 	} else {
-		ctx.JSON(http.StatusBadRequest, err)
+		ctx.JSON(http.StatusBadRequest, ErrorResponse(err))
 	}
 }

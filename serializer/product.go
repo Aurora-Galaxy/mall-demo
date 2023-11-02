@@ -31,7 +31,7 @@ func BuildProduct(product *model.Product) *Product {
 		CategoryID:    product.CategoryID,
 		Title:         product.Title,
 		Info:          product.Info,
-		ImgPath:       conf.Config.PhotoPath.PhotoHost + conf.Config.System.HttpPort + conf.Config.PhotoPath.ProductPath,
+		ImgPath:       conf.Config.PhotoPath.PhotoHost + conf.Config.System.HttpPort + conf.Config.PhotoPath.ProductPath + product.ImgPath,
 		Price:         product.Price,
 		DiscountPrice: product.DiscountPrice,
 		View:          product.View(),

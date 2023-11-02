@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// ListCarousel 轮播图
 func ListCarousel(ctx *gin.Context) {
 	var carouselService service.CarouselService
 	err := ctx.ShouldBind(&carouselService)

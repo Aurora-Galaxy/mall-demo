@@ -27,7 +27,13 @@ func NewRouter() *gin.Engine {
 		})
 		v1.POST("/user/register", api.UserRegister) //注册
 		v1.POST("/user/login", api.UserLogin)       //登录
-		v1.GET("/carousel", api.ListCarousel)       //商品轮播图
+
+		//商品操作
+		v1.GET("/carousel", api.ListCarousel)         //商品轮播图
+		v1.GET("/product/list", api.ListProduct)      //展示商品列表
+		v1.POST("/product/search", api.SearchProduct) //展示商品列表
+		v1.GET("/product/:id", api.GetInfoProduct)    //获取商品详细信息
+		v1.GET("/productimg/:id", api.GetImgProduct)  //获取商品图片路径
 		authed := v1.Group("/")
 		authed.Use(middleware.JWT())
 		{
@@ -39,6 +45,7 @@ func NewRouter() *gin.Engine {
 
 			//商品操作
 			authed.POST("product/create", api.CreateProduct) //创建商品
+
 		}
 	}
 	return r

@@ -28,6 +28,7 @@ func setOutPutFile() (*os.File, error) {
 	now := time.Now()
 	LogFilePath := ""
 	dir, err := os.Getwd()
+	//dir = filepath.Join(dir, "..")
 	if err == nil {
 		LogFilePath = dir + "/logs/"
 	}
@@ -44,7 +45,7 @@ func setOutPutFile() (*os.File, error) {
 	fileName := path.Join(LogFilePath, logFileName)
 	_, err = os.Stat(fileName)
 	if os.IsNotExist(err) { //判断该文件路径是否存在
-		err = os.MkdirAll(fileName, 0777)
+		_, err = os.Create(fileName)
 		if err != nil {
 			log.Println(err.Error())
 			return nil, err

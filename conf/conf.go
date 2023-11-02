@@ -114,8 +114,8 @@ type Es struct {
 
 func InitConfig() {
 	workDir, _ := os.Getwd() // 获取当前根路径
-	workPath := filepath.Dir(workDir)
-	workPath = filepath.Join(workPath, "conf")
+	//workPath := filepath.Dir(workDir)
+	workPath := filepath.Join(workDir, "conf")
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(workPath)
